@@ -1,0 +1,14 @@
+{
+  "availability-zones:account=844540003076:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ],
+  "hosted-zone:account=844540003076:domainName=deeslabs.net:region=us-east-1": {
+    "Id": "/hostedzone/Z0683791ZEO0AQIF5GSS",
+    "Name": "deeslabs.net."
+  }
+}

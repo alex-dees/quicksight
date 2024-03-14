@@ -1,0 +1,21 @@
+### verified access policy
+
+permit(principal,action,resource)
+when {
+    context.oidc_test.groups.contains("poc")
+}; 
+
+
+permit(principal,action,resource)
+when {
+    context.http_request.http_method != "INVALID_METHOD"
+}; 
+
+### changes for verified access
+
+- lb 
+  - internetFacing = false
+  - add va sg to lb sg ingress
+- set cname to the va endpoint
+- add groups to okta security->api->auth servers (default)->scopes
+
