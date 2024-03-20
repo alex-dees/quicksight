@@ -5,13 +5,15 @@ import { Construct } from 'constructs';
 
 import { Net } from './setup/net';
 import { Shared } from './setup/shared';
-// import { Embedder } from './embedder';
+import { Embedder } from './embedder';
 import { StaticSite } from './static-site';
 
 export interface IContext {
+  idp: any,
   sub: string,
   zone: string,
   cert: string,
+  secret: string,
   ingress: string,
   dashboard: string
 }
@@ -28,23 +30,26 @@ export class QuickSightStack extends cdk.Stack {
     this.setup();
 
     // add embed lambda to lb
-    // new Embedder(this, 'Embedder', {
-    //   path: '/embed',
-    //   priority: 5,
-    //   dashboard: this.ctx.dashboard,
-    //   listener: this.shared.listener
-    // });
+    new Embedder(this, 'Embedder', {
+      path: '/api',
+      priority: 5,
+      idp: this.ctx.idp.url,
+      auth: this.shared.auth,
+      dashboard: this.ctx.dashboard,
+      listener: this.shared.listener
+    });
 
     // set url for embed api
-    // const fqdn = `${this.ctx.sub}.${this.ctx.zone}`;
-    // const api = `const api = 'https://${fqdn}/embed';`;
-    // fs.writeFileSync(path.join(__dirname, '../dist/site2', 'config.js'), api);
+    const fqdn = `${this.ctx.sub}.${this.ctx.zone}`;
+    const api = `const api = 'https://${fqdn}/api';`;
+    fs.writeFileSync(path.join(__dirname, '../dist/site', 'config.js'), api);
 
     // add static sites to lb
     new StaticSite(this, 'Site', {
       path: '/site*',
       asset: './dist',
       priority: 10,
+      auth: this.shared.auth,
       bucket: this.shared.bucket,
       listener: this.shared.listener,
       targetGroup: this.shared.targetGroup
@@ -60,6 +65,7 @@ export class QuickSightStack extends cdk.Stack {
     
     // create shared app resources
     this.shared = new Shared(this, 'Shared', {
+      idp: this.ctx.idp,
       vpc: this.net.vpc,
       sub: this.ctx.sub,
       zone: this.net.zone,

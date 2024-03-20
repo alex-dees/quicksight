@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { AuthOptions } from './setup/shared';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as nodefn from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -8,8 +9,10 @@ import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as elbTgt from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 
 export interface EmbedProps {
+  idp: string,
   path: string,
   priority: number,
+  auth: AuthOptions,
   listener: elb.ApplicationListener,
   dashboard: string
 }
@@ -31,6 +34,7 @@ export class Embedder extends Construct {
         ]
       },
       environment: {
+        IDP: props.idp,
         REGION: stack.region,
         ACCOUNT: stack.account,
         DASHBOARD: props.dashboard
@@ -47,9 +51,18 @@ export class Embedder extends Construct {
       targets: [new elbTgt.LambdaTarget(fn)]
     });
 
+    // props.listener.addAction('Embed', {
+    //   priority: props.priority,
+    //   action: elb.ListenerAction.forward([tg]),
+    //   conditions: [ elb.ListenerCondition.pathPatterns([props.path]) ]
+    // });
+
     props.listener.addAction('Embed', {
       priority: props.priority,
-      action: elb.ListenerAction.forward([tg]),
+      action: elb.ListenerAction.authenticateOidc({
+          ...props.auth,
+          next: elb.ListenerAction.forward([tg])
+      }),
       conditions: [ elb.ListenerCondition.pathPatterns([props.path]) ]
     });
   }

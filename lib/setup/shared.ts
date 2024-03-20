@@ -5,12 +5,12 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as r53 from 'aws-cdk-lib/aws-route53';
 import * as cr from 'aws-cdk-lib/custom-resources';
+import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as elbTgt from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
-import { truncateSync } from 'fs';
-import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
 
 export interface SharedProps {
+    idp: any,
     vpc: ec2.IVpc,
     cert: string,
     sub: string,
@@ -19,7 +19,10 @@ export interface SharedProps {
     s3Ep: ec2.InterfaceVpcEndpoint
 }
 
+export type AuthOptions = Omit<elb.AuthenticateOidcOptions, 'next'>;
+
 export class Shared extends Construct {
+    readonly auth: AuthOptions;
     readonly bucket: s3.Bucket;
     readonly lb: elb.ApplicationLoadBalancer;
     readonly listener: elb.ApplicationListener;
@@ -28,6 +31,7 @@ export class Shared extends Construct {
     constructor(scope: Construct, id: string, private props: SharedProps) {
         super(scope, id);
         this.lb = this.createLb();
+        this.auth = this.authOpts();
         this.bucket = this.createBucket();
         this.listener = this.createListener();
         this.targetGroup = this.createTgtGrp();
@@ -48,27 +52,33 @@ export class Shared extends Construct {
         });
     }
 
+    private authOpts() {
+        const secret = secrets.Secret
+            .fromSecretCompleteArn(this, 'Secret', this.props.idp.clientSecret);
+
+        const url = this.props.idp.url;
+        const opts: AuthOptions = {
+            scope: 'openid groups',
+            issuer: url,
+            clientSecret: secret.secretValue,
+            clientId: this.props.idp.clientId,
+            tokenEndpoint: `${url}/v1/token`,
+            userInfoEndpoint: `${url}/v1/userinfo`,
+            authorizationEndpoint: `${url}/v1/authorize`,
+        };
+
+        return opts;
+    }
+
     private createLb() {
         const vpc = this.props.vpc;    
         const sg = new ec2.SecurityGroup(this, 'LbSg', { vpc });
         sg.addIngressRule(ec2.Peer.ipv4(this.props.ingress), ec2.Port.allTcp());
-
-        const logs = new s3.Bucket(this, 'LbLogs', {
-            autoDeleteObjects: true,
-            removalPolicy: cdk.RemovalPolicy.DESTROY
-        });
-
-        const lb = new elb.ApplicationLoadBalancer(this, 'Lb', {
+        return new elb.ApplicationLoadBalancer(this, 'Lb', {
           vpc,
           securityGroup: sg,
-          internetFacing: false,
-        //   internetFacing: true,
-        //   dropInvalidHeaderFields: true
+          internetFacing: true
         });
-
-        lb.logAccessLogs(logs);
-        
-        return lb;
     }
 
     private createRecord() {

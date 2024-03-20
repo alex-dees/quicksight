@@ -1,4 +1,4 @@
-# $1 = domain name
+# arg 1 = domain name
 
 rm -f *.pem *.conf *.txt
 
