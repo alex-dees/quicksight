@@ -39,7 +39,7 @@ export class QuickSightStack extends cdk.Stack {
       listener: this.shared.listener
     });
 
-    // set url for embed api
+    // set api url in the site
     const fqdn = `${this.ctx.sub}.${this.ctx.zone}`;
     const api = `const api = 'https://${fqdn}/api';`;
     fs.writeFileSync(path.join(__dirname, '../dist/site', 'config.js'), api);

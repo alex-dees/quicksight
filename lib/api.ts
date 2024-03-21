@@ -8,7 +8,7 @@ import * as nodefn from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as elbTgt from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 
-export interface EmbedProps {
+export interface ApiProps {
   idp: string,
   path: string,
   priority: number,
@@ -18,7 +18,7 @@ export interface EmbedProps {
 }
 
 export class Api extends Construct {
-  constructor(scope: Construct, id: string, private props: EmbedProps) {
+  constructor(scope: Construct, id: string, private props: ApiProps) {
     super(scope, id);
   
     const stack = cdk.Stack.of(this);
@@ -47,17 +47,11 @@ export class Api extends Construct {
         resources: ['*']
     }));
 
-    const tg = new elb.ApplicationTargetGroup(this, 'EmbedTgtGrp', {
+    const tg = new elb.ApplicationTargetGroup(this, 'ApiTgtGrp', {
       targets: [new elbTgt.LambdaTarget(fn)]
     });
 
-    // props.listener.addAction('Embed', {
-    //   priority: props.priority,
-    //   action: elb.ListenerAction.forward([tg]),
-    //   conditions: [ elb.ListenerCondition.pathPatterns([props.path]) ]
-    // });
-
-    props.listener.addAction('Embed', {
+    props.listener.addAction('Api', {
       priority: props.priority,
       action: elb.ListenerAction.authenticateOidc({
           ...props.auth,
