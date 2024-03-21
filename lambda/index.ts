@@ -14,7 +14,8 @@ const dashboard = process.env['DASHBOARD'];
 const arn = `arn:aws:quicksight:${region}:${account}:dashboard/${dashboard}`;
 
 async function getClaims(headers: any) {
-    const verifier = new OktaJwtVerifier({ issuer: <string>idp });
+    const issuer = `${idp}/oauth2/default`;
+    const verifier = new OktaJwtVerifier({ issuer });
     const jwt = await verifier.verifyAccessToken(headers['x-amzn-oidc-accesstoken'], 'api://default');
     return jwt.claims;
 }
@@ -53,7 +54,23 @@ async function getEmbed(event: any) {
 
 export const handler: Handler = async (event) => {
     try {
-        return await getEmbed(event);
+        switch (event.headers['action']) {
+            case 'embed':
+                return await getEmbed(event);
+            case 'logout':
+                return {
+                    statusCode: 200,
+                    body: `${idp}/login/signout`,
+                    headers: {
+                        'Content-Type': 'text/html;',
+                        'Set-Cookie': 'AWSELBAuthSessionCookie-0=; Max-Age=-1'
+                    }
+                };
+            default:
+                return {
+                    statusCode: 404
+                };                
+        }
     } catch (e) {
         console.error(e);
         throw e;

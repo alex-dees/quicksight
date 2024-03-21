@@ -53,18 +53,20 @@ export class Shared extends Construct {
     }
 
     private authOpts() {
+        const idp = this.props.idp;
+        const url = `${idp.url}/oauth2/default`;
         const secret = secrets.Secret
-            .fromSecretCompleteArn(this, 'Secret', this.props.idp.clientSecret);
-
-        const url = this.props.idp.url;
+            .fromSecretCompleteArn(this, 'Secret', idp.clientSecret)
+            .secretValue;
+            
         const opts: AuthOptions = {
             scope: 'openid groups',
+            clientId: idp.clientId,
+            clientSecret: secret,
             issuer: url,
-            clientSecret: secret.secretValue,
-            clientId: this.props.idp.clientId,
             tokenEndpoint: `${url}/v1/token`,
             userInfoEndpoint: `${url}/v1/userinfo`,
-            authorizationEndpoint: `${url}/v1/authorize`,
+            authorizationEndpoint: `${url}/v1/authorize`
         };
 
         return opts;
