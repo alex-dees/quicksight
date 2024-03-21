@@ -17,7 +17,7 @@ export interface EmbedProps {
   dashboard: string
 }
 
-export class Embedder extends Construct {
+export class Api extends Construct {
   constructor(scope: Construct, id: string, private props: EmbedProps) {
     super(scope, id);
   

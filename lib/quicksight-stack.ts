@@ -3,9 +3,9 @@ import * as path from 'path';
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
+import { Api } from './api';
 import { Net } from './setup/net';
 import { Shared } from './setup/shared';
-import { Embedder } from './embedder';
 import { StaticSite } from './static-site';
 
 export interface IContext {
@@ -29,8 +29,8 @@ export class QuickSightStack extends cdk.Stack {
     // create prereqs
     this.setup();
 
-    // add embed lambda to lb
-    new Embedder(this, 'Embedder', {
+    // add lambda api to lb
+    new Api(this, 'Api', {
       path: '/api',
       priority: 5,
       idp: this.ctx.idp.url,
