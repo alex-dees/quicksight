@@ -19,11 +19,11 @@
   "requireApproval": "never",
   "context": {
     "app": {
-      "sub": "poc",
-      "zone": "deeslabs.net",
-      "ingress": "3.0.0.0/8",
-      "dashboard": "QSTCF-Dashboard",
-      "cert": "arn:aws:acm:us-east-1:844540003076:certificate/b953ef60-fc51-43f2-9dfb-ea48a8743d71"
+      "sub": "",
+      "zone": "",
+      "ingress": "",
+      "dashboard": "",
+      "cert": ""
     },
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
