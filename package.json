@@ -24,6 +24,7 @@
   "dependencies": {
     "@aws-sdk/client-quicksight": "^3.515.0",
     "@aws-sdk/client-s3": "^3.507.0",
+    "@okta/jwt-verifier": "^3.0.1",
     "@sparticuz/chromium": "111.0.0",
     "aws-cdk-lib": "2.114.1",
     "constructs": "^10.0.0",
