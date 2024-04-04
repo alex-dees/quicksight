@@ -19,16 +19,16 @@
   "requireApproval": "never",
   "context": {
     "app": {
-      "sub": "",
-      "zone": "",
-      "ingress": "",
-      "dashboard": "",
+      "sub": "poc",
+      "zone": "deeslabs.net",
+      "ingress": "3.0.0.0/8",
+      "dashboard": "QSTCF-Dashboard",
       "idp": {
-        "url": "",
-        "clientId": "",
-        "clientSecret": ""
+        "url": "https://dev-45155661.okta.com",
+        "clientId": "0oafqhrfcoZgIvvea5d7",
+        "clientSecret": "arn:aws:secretsmanager:us-east-1:844540003076:secret:idp-client-secret-nmU9RB"
       },
-      "cert": ""
+      "cert": "arn:aws:acm:us-east-1:844540003076:certificate/b953ef60-fc51-43f2-9dfb-ea48a8743d71"
     },
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
