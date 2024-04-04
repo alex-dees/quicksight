@@ -1,6 +1,6 @@
 # Embedded QuickSight Example
 
-This example demonstrates embedding a QuickSight dashboard in an S3 static website.  Okta is used for authentication and tag-based row-level security (RLS) to restrict data access.
+This example demonstrates embedding a QuickSight dashboard in a S3 static website.  Okta is used for authentication and tag-based row-level security (RLS) to restrict data access.
 
 [Reference](https://docs.aws.amazon.com/quicksight/latest/user/quicksight-dev-rls-tags.html)
 
@@ -13,7 +13,7 @@ Follow [instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.h
 ### QuickSight
 Create the QuickSight Cloudformation sample **qs/template.yaml**.
 
-The template has been modified from its [original version]((https://devops.learnquicksight.online/quicksight-via-cloudformation.html)). &nbsp;It includes tag-based row level security (RLS) for the Region and Segment columns.
+The template has been modified from its [original version](https://devops.learnquicksight.online/quicksight-via-cloudformation.html). &nbsp;It includes tag-based row level security (RLS) for the Region and Segment columns.
 
 ### DNS
 Create a public domain and hosted zone in Route 53.
@@ -39,10 +39,10 @@ aws s3 ls s3://<bucket name>
     3. Choose the Authorization Code grant type.
     4. Enter the Sign-in redirect URI e.g. https://&lt;subdomain&gt;/oauth2/idpresponse
     5. Choose Limit access to selected groups
-       1. Add US.Startup
-       2. Add EMEA.SMB
+       1. Add **US.Startup**
+       2. Add **EMEA.SMB**
     6. Save 
-5. Copy **Client ID and Secret** for configuration.
+5. Copy the **Client ID and Secret** for configuration.
 6. Select the Sign On tab
     1. Click Edit under OpenID Connect ID Token
     2. Set Groups claim filter to:  groups Matches regex .*
@@ -112,4 +112,4 @@ Open the website in your browser:
 
 https://&lt;subdomain&gt;/site/index.html
 
-Very data is restricted to each user, by Region and Segment, based on their group assignments.
+Very that data is restricted to each user, by Region and Segment, based on their group assignments.
