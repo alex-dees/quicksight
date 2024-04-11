@@ -18,18 +18,6 @@
   },
   "requireApproval": "never",
   "context": {
-    "app": {
-      "sub": "",
-      "zone": "",
-      "ingress": "",
-      "dashboard": "QSTCF-Dashboard",
-      "idp": {
-        "url": "",
-        "clientId": "",
-        "clientSecret": ""
-      },
-      "cert": ""
-    },
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": [

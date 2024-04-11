@@ -37,8 +37,8 @@ Resources:
       DataSourceParameters:
         S3Parameters:
           ManifestFileLocation:
-            Bucket: ee-assets-prod-us-east-1
-            Key: modules/337d5d05acc64a6fa37bcba6b921071c/v1/SalesDataManifest.json
+            Bucket: ws-assets-prod-iad-r-iad-ed304a55c2ca1aee
+            Key: cd8ebba2-2ef8-431a-8f72-ca7f6761713d/generic/deployqs/SalesDataManifest.json
       Permissions:
         - Principal: !Join
             - ''
