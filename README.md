@@ -59,12 +59,12 @@ aws s3 ls s3://<bucket name>
 
 ## Config
 
-Add the Okta client secret to SecretsManager.  This will also set the secret ARN in cdk.json.
+Add the Okta client secret to SecretsManager.  This will also set the secret ARN in cdk.context.json.
 ```
 cd scripts
 ./secret.sh <client secret>
 ```
-Create a self-signed certificate and import it into ACM.  This will also set the cert ARN in cdk.json for offloading TLS on the ALB.
+Create a self-signed certificate and import it into ACM.  This will also set the cert ARN in cdk.context.json for offloading TLS on the ALB.
 ```
 ./ssl.sh <subdomain>
 ```

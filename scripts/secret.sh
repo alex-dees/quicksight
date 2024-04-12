@@ -7,4 +7,4 @@ arn=$(aws secretsmanager create-secret \
 --output text)
 
 # set secret arn in cdk.json
-sed -i "s|.*clientSecret.*|        \"clientSecret\": \"$arn\"|g" ../cdk.json
+sed -i "s|.*clientSecret.*|      \"clientSecret\": \"$arn\"|g" ../cdk.context.json

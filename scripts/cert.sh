@@ -29,4 +29,4 @@ arn=$(aws acm import-certificate \
 --output text)
 
 # set cert arn in cdk.json
-sed -i "s|.*cert.*|      \"cert\": \"$arn\"|g" ../cdk.json
+sed -i "s|.*cert.*|    \"cert\": \"$arn\"|g" ../cdk.context.json
