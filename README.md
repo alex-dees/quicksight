@@ -1,6 +1,6 @@
 # Embedded QuickSight Example
 
-This example demonstrates embedding a QuickSight dashboard in a S3 static website.  Okta is used for authentication and tag-based row-level security (RLS) to restrict data access.
+This example demonstrates embedding a QuickSight dashboard in a static S3 website.  Okta is used for authentication and tag-based row-level security (RLS) for restricting data access.
 
 [Reference](https://docs.aws.amazon.com/quicksight/latest/user/quicksight-dev-rls-tags.html)
 
@@ -11,9 +11,9 @@ Follow [instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.h
 ## Setup
 
 ### QuickSight
-Create the QuickSight Cloudformation sample **qs/template.yaml**.
+Create the QuickSight CloudFormation sample **qs/template.yaml**.
 
-The template has been modified from its [original version](https://devops.learnquicksight.online/quicksight-via-cloudformation.html). &nbsp;It includes tag-based row level security (RLS) for the Region and Segment columns.
+The template has been modified from its [original version](https://catalog.workshops.aws/quicksight/en-US/admin-workshop/1-prerequisites) to include tag-based row level security (RLS) for the Region and Segment columns.
 
 ### DNS
 Create a public domain and hosted zone in Route 53.
@@ -64,12 +64,12 @@ Add the Okta client secret to SecretsManager.  This will also set the secret ARN
 cd scripts
 ./secret.sh <client secret>
 ```
-Create a self-signed certificate and import it into ACM.  This will also set the cert ARN in cdk.json that will be used to offload TLS on the ALB.
+Create a self-signed certificate and import it into ACM.  This will also set the cert ARN in cdk.json for offloading TLS on the ALB.
 ```
 ./ssl.sh <subdomain>
 ```
 
-Configure the remaining CDK context (cdk.json)
+Configure the remaining CDK context (cdk.context.json)
 
 ```
     "app": {
