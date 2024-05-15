@@ -66,7 +66,7 @@ cd scripts
 ```
 Create a self-signed certificate and import it into ACM.  This will also set the cert ARN in cdk.context.json for offloading TLS on the ALB.
 ```
-./ssl.sh <subdomain>
+./cert.sh <subdomain>
 ```
 
 Configure the remaining CDK context (cdk.context.json)
