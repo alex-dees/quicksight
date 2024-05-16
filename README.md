@@ -66,7 +66,7 @@ cd scripts
 ```
 Create a self-signed certificate and import it into ACM.  This will also set the cert ARN in cdk.context.json for offloading TLS on the ALB.
 ```
-./ssl.sh <subdomain>
+./cert.sh <subdomain>
 ```
 
 Configure the remaining CDK context (cdk.context.json)
@@ -91,7 +91,7 @@ Configure the remaining CDK context (cdk.context.json)
 | sub | subdomain |
 | ingress |  Your WorkSpace CIDR IP  |
 | dashboard | Name of dashboard to embed  |
-| idp url | Okta issurer url  |
+| idp url | Okta url e.g. https://dev-11111111.okta.com |
 | idp clientId | Okta app client ID  |
 | idp clientSecret | Okta app client secret ARN |
 | cert | ACM cert ARN |
