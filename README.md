@@ -91,7 +91,7 @@ Configure the remaining CDK context (cdk.context.json)
 | sub | subdomain |
 | ingress |  Your WorkSpace CIDR IP  |
 | dashboard | Name of dashboard to embed  |
-| idp url | Okta issurer url  |
+| idp url | Okta url e.g. https://dev-11111111.okta.com |
 | idp clientId | Okta app client ID  |
 | idp clientSecret | Okta app client secret ARN |
 | cert | ACM cert ARN |
